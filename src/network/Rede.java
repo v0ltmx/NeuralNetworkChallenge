@@ -1,4 +1,4 @@
-package perceptron;
+package network;
 
 import java.util.Scanner;
 
@@ -14,46 +14,44 @@ public class Rede {
 
 	public static void main(String[] args) {
 		Rede perceptron = new Rede();
-		perceptron.iniciarRede();
-		perceptron.treinarRede();
-		perceptron.executarRede();
+		perceptron.initRede();
+		perceptron.trainRede();
+		perceptron.execRede();
 	}
 
-	public void iniciarRede() {	
+	public void initRede() {	
 		System.out.println("INICIANDO REDE NEURAL");
 		qtdExemplos = exemplos.length;
 		qtdAtributos = exemplos[0].length;
 		mcp = new Neuronio(qtdAtributos); 
 	}
 
-	public void treinarRede() {
+	public void trainRede() {
 		double erro;
 		int iteracao = 1;
-		
 		do {
 			System.out.println("ITERACAO " + iteracao++);
 			erro = 0;
 			for (int i = 0; i < qtdExemplos; i++) {
 				for (int j = 0; j < qtdAtributos; j++) {
-					mcp.setEntrada(j, exemplos[i][j]);
+					mcp.execEntrada(j, exemplos[i][j]);
 				}
-				mcp.setSaidaDesejada(saidaDesejada[i]);
-				mcp.calcSaidaNeuronio();
-				mcp.setErro();
+				mcp.execYd(saidaDesejada[i]);
+				mcp.somatorio();
+				mcp.execErro();
 				erro = erro + Math.abs(mcp.getErro()); 
 			}
 		} while (erro > 0);
 		
 	}
 
-	public void executarRede() {
+	public void execRede() {
 		do {
-			
 			System.out.println("ENTRE COM OS ATRIBUTOS DO PADRAO ");
 			for (int j = 0; j < qtdAtributos; j++) {
-				mcp.setEntrada(j, entrada.nextInt());
+				mcp.execEntrada(j, entrada.nextInt());
 			}
-			mcp.calcSaidaNeuronio();
+			mcp.somatorio();
 			System.out.println("PADRAO PERTENCE A CLASSE: " + mcp.getSaida());
 			System.out.println("DIGITE 9 PARA CONTINUAR");
 		} while (entrada.nextInt() == 9);
